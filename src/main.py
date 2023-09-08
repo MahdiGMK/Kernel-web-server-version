@@ -17,6 +17,7 @@ import argparse
 # define argument parser
 parser = argparse.ArgumentParser(description='choose map to play on')
 parser.add_argument('-m', '--map', type=str, help='choose map to play on')
+parser.add_argument('-p', '--port', type=str, help='port to run game')
 args = parser.parse_args()
 
 
@@ -28,7 +29,8 @@ maps = os.listdir('maps')
 
 ## get the selected map from the player
 selected_map = str(maps.index(args.map)) if args.map != None else "None"
-
+selected_port = str(args.port) if args.port != None else "12345"
+print(f"port : {selected_port}")
 while selected_map.isdigit() == False or int(selected_map) >= len(maps) or int(selected_map) < 0:
     ## show the list of maps from the maps folder
     print("Choose a map from the list of maps:")
@@ -53,6 +55,7 @@ app.config['main_game'] = main_game
 
 # set the read_config function in the flask global variable
 app.config['config'] = read_config.read_config()
+app.config['config']['port'] = selected_port
 main_game.config = app.config['config']
 
 # set the debug variable to True or False to see the debug messages and generate debug logs 
